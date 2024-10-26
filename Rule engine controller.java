@@ -1,3 +1,5 @@
+package com.ruleengine;
+
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -7,17 +9,15 @@ public class RuleEngineController {
     
     private final RuleEngineService ruleEngineService;
 
-    public RuleEngineController(RuleEngineService ruleEngineService) {
-        this.ruleEngineService = ruleEngineService;
+    public RuleEngineController() {
+        this.ruleEngineService = new RuleEngineService();
     }
 
-    // API to create a rule
     @PostMapping("/create")
     public ASTNode createRule(@RequestBody String ruleString) {
         return ruleEngineService.createRule(ruleString);
     }
 
-    // API to combine multiple rules
     @PostMapping("/combine")
     public ASTNode combineRules(@RequestBody String[] rules) {
         ASTNode[] astRules = new ASTNode[rules.length];
@@ -27,7 +27,6 @@ public class RuleEngineController {
         return ruleEngineService.combineRules(astRules);
     }
 
-    // API to evaluate a rule with data
     @PostMapping("/evaluate")
     public boolean evaluateRule(@RequestBody Map<String, Object> data, @RequestBody ASTNode ast) {
         return ruleEngineService.evaluateRule(ast, data);
